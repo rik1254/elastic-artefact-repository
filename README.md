@@ -34,14 +34,17 @@ Run the following script. It will fail if the above variables are not set.
 ./build.sh
 ```
 This script creates a new Docker image containing the artefacts for updates and upgrades to Elastic Agents and also Endpoint Security Definitions.
-## Verify the image has created (the Version, Image ID and Size will differ):
+## Verify the image has created
+The Version, Image ID and Size will differ:
 ```
 docker images
 
 REPOSITORY                TAG           IMAGE ID      CREATED        SIZE
 docker.io/rik1254/ear  8.18.4        c68166aa2d7d  5 minutes ago  1.57 GB
 ```
-Going forward in this README, the IMAGE will be ```docker.io/rik1254/ear:8.18.4```.
+Future references to ```IMAGE``` will require the ```REPOSITORY``` and ```TAG``` elements from above.
+
+Using the above example, the IMAGE will be ```docker.io/rik1254/ear:8.18.4```.
 
 # Save the image
 ## Save the image
