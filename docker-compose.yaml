@@ -1,7 +1,10 @@
 services:
   artifact:
-    image: ear:latest
+    image: ${IMAGE}
     ports:
       - "8443:443"
     volumes:
-      - ./certs/:/usr/share/nginx/certs/:ro
+      - ${CERTIFICATE_PATH}:/usr/share/nginx/certs/ear-http.crt:z
+      - ${KEY_PATH}:/usr/share/nginx/certs/ear-http.pem:z
+      - ./nginx.conf:/etc/nginx/conf.d/nginx.conf:z
+      - ./index.html:/usr/share/nginx/html/index.html:z
