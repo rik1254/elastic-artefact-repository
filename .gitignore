@@ -1,3 +1,6 @@
 .DS_Store
-certs/wildcard.crt
-certs/wildcard.pem
+build/certs/wildcard.crt
+build/certs/wildcard.pem
+deploy/certs/
+deploy/ear.tar
+deploy/variables.env
