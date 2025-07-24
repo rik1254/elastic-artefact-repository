@@ -107,6 +107,7 @@ Out of the box, the provided files (```nginx.conf```, ```variables.env``` and ``
 ```
 ./deploy.sh
 ```
+Follow the prompts printed on screen.
 
 EAR will be listening on port 8443. Firewalls and SELinux may need adjusting to allow access to the port.
 Additional changes will be required within Kibana to accept the air-gapped changes.
