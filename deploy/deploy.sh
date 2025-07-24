@@ -28,7 +28,7 @@ while [[ "$choice" != "up" && "$choice" != "down" ]]; do
       docker compose down
       ;;
     logs)
-      docker logs elastic-artefact-repository_artifact_1
+      docker logs deploy_artifact_1
       exit 0
       ;;
     exit)

@@ -3,4 +3,5 @@ build/certs/wildcard.crt
 build/certs/wildcard.pem
 deploy/certs/
 deploy/ear.tar
+deploy/nginx.conf
 deploy/variables.env

@@ -15,8 +15,9 @@ echo $IMAGE
 
 
 # Move items into deployable directory
-cp -R certs ../deploy/
-cp variables.env ../deploy/
+cp -R certs ../deploy/ -f
+cp variables.env ../deploy/ -f
+cp nginx.conf ../deploy/ -f
 
 # Save newly created image into 'deploy' directory
-docker save $IMAGE > ../deploy/ear.tar
+#docker save $IMAGE > ../deploy/ear.tar
