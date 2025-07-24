@@ -13,8 +13,18 @@ Nginx based container that serves Elastic Artifacts within an airgapped envriome
 
 Set the environment variables in ```variables.env``` using a text editor of your choice.
 ```
+export STACK_VERSION=8.18.4
 export NGINX_VERSION=1.29.0
-export ELASTIC_VERSION=8.18.4
+export REPOSITORY=docker.io
+export CREATOR=rik1254
+export NAME=artefact-repository
+
+# Add the absolute or relative path from the deploy.sh script
+export CERTIFICATE_PATH=./certs/wildcard.crt
+export KEY_PATH=./certs/wildcard.pem
+
+# DO NOT CHANGE
+export IMAGE=$REPOSITORY/$CREATOR/$NAME:$STACK_VERSION
 ```
 Export the variables
 ```
@@ -53,6 +63,7 @@ To do this, the image name will need to be known.
 docker save IMAGE > ear.tar
 ```
 At this stage, the image can be exported from the machine and copied to another machine.The following will also be required additionally to the image:
+- deploy.sh
 - docker-compose.yml
 - nginx.conf
 - variables.env
@@ -81,9 +92,10 @@ It is expected to have the following directory layout and all of the following c
 ```
 .
 ├── certs
-│   ├── els.crt
-│   └── els.key
-├── docker-compose.yaml
+│   ├── CERTIFICATE
+│   └── KEY
+├── deploy.sh
+├── docker-compose.yml
 ├── nginx.conf
 └── variables.env
 ```
@@ -93,7 +105,7 @@ Out of the box, the provided files (```nginx.conf```, ```variables.env``` and ``
 
 
 ```
-docker compose up -d
+./deploy.sh
 ```
 
 EAR will be listening on port 8443. Firewalls and SELinux may need adjusting to allow access to the port.
