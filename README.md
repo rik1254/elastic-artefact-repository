@@ -1,16 +1,9 @@
 # Elastic Artifact Registry
-Pre-Packaged at GitHub:
-
-```
-docker pull charliek17/ear:VERSION
-```
-
 Nginx based container that serves Elastic Artifacts within an airgapped envrioment.
 
-
 # Limitations
-Currently Supports 'elastic-agent/elastic-agent' 'heartbeat/heartbeat' 'filebeat/filebeat' 'packetbeat/packetbeat' 'auditbeat/auditbeat' 'osquerybeat/osquerybeat', fleet-server/fleet-server' 'cloudbeat/cloudbeat' 'endpoint-dev/endpoint-security' 'apm-server/apm-server' 'prodfiler/pf-host-agent' 'prodfiler/pf-elastic-collector' 'prodfiler/pf-elastic-symbolizer'
-
+- Uses this [script](https://www.elastic.co/docs/deploy-manage/deploy/self-managed/air-gapped-install#additional-artifact-registry-examples) to download artefacts.
+- Uses this [command](https://www.elastic.co/docs/solutions/security/configure-elastic-defend/configure-offline-endpoints-air-gapped-environments#_step_3_manually_copy_artifact_updates) to download endpoint updates
 
 # Build the image
 ## Requirements
@@ -41,18 +34,20 @@ Run the following script. It will fail if the above variables are not set.
 ./build.sh
 ```
 This script creates a new Docker image containing the artefacts for updates and upgrades to Elastic Agents and also Endpoint Security Definitions.
+## Verify the image has created (the Version, Image ID and Size will differ):
+```
+docker images
+
+REPOSITORY                TAG           IMAGE ID      CREATED        SIZE
+docker.io/rik1254/ear  8.18.4        c68166aa2d7d  5 minutes ago  1.57 GB
+```
+Going forward in this README, the IMAGE will be ```docker.io/rik1254/ear:8.18.4```.
 
 # Save the image
-
-### (OPTIONAL) Download image
-If the image has been previously built, this can be ignored
+## Save the image
+To do this, the image name will need to be known.
 ```
-docker pull docker.io/charliek17/ear:VERSION
-```
-### Save the image
-If the image was created using the 'Steps to build', then it isn't required to run the above step
-```
-docker save docker.io/charliek17/ear:VERSION > ear.tar
+docker save IMAGE > ear.tar
 ```
 At this stage, the image can be exported from the machine and copied to another machine.The following will also be required additionally to the image:
 - docker-compose.yml
@@ -74,7 +69,7 @@ Verify it has loaded with the following (the Version, Image ID and Size will dif
 docker images
 
 REPOSITORY                TAG           IMAGE ID      CREATED        SIZE
-docker.io/charliek17/ear  8.18.4        c68166aa2d7d  5 minutes ago  1.57 GB
+docker.io/rik1254/ear  8.18.4        c68166aa2d7d  5 minutes ago  1.57 GB
 ```
 
 # Run the image
