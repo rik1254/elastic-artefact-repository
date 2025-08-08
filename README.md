@@ -92,8 +92,6 @@ docker.io/rik1254/artefact-repository  9.0.4-2025-08-08  1ec42dd0481b  About a m
 ## Requirements
 Unpack the 'deploy' package taken at the same time the image was save. This will contain the following:
 ```
-It is expected to have the following directory layout and all of the following commands are to be executed in the same directory as the ```docker-compose.yml``` file.
-```
 .
 ├── certs
 │   ├── CERTIFICATE
