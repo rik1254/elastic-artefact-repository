@@ -11,13 +11,13 @@ fi
 
 echo "Variables set."
 echo $IMAGE
-#docker build --rm --build-arg NGINX_VERSION=$NGINX_VERSION -t $IMAGE .
+docker build --rm --build-arg NGINX_VERSION=$NGINX_VERSION -t $IMAGE .
 
 
 # Move items into deployable directory
 cp -R certs ../deploy/ -f
-cp variables.env ../deploy/ -f
 cp nginx.conf ../deploy/ -f
+cp variables.env ../deploy/ -f
 
 # Save newly created image into 'deploy' directory
 #docker save $IMAGE > ../deploy/ear.tar

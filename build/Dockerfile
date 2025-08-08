@@ -8,3 +8,5 @@ COPY variables.env /opt/variables.env
 COPY download.sh /opt/download.sh
 RUN ["chmod", "+x", "/opt/download.sh"]
 RUN /opt/download.sh
+RUN find /usr/share/nginx/html/downloads -type d -exec chmod 755 {} +
+RUN find /usr/share/nginx/html/downloads -type f -exec chmod 644 {} +

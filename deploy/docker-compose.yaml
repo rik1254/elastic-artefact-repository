@@ -2,7 +2,7 @@ services:
   artifact:
     image: ${IMAGE}
     ports:
-      - "8443:443"
+      - ${EAR_PORT}:443
     volumes:
       - ${CERTIFICATE_PATH}:/usr/share/nginx/certs/ear-http.crt:z
       - ${KEY_PATH}:/usr/share/nginx/certs/ear-http.pem:z
