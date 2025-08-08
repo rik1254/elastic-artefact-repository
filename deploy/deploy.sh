@@ -1,7 +1,6 @@
 #!/bin/bash
 source variables.env
 
-# Function to display the menu
 function display_menu() {
   echo "Choose an action:"
   echo "up - Starts the container, can also be used to restart the container if a new image has been defined."
@@ -21,11 +20,18 @@ while [[ "$choice" != "up" && "$choice" != "down" ]]; do
   case $choice in
     up)
       echo "Running 'docker compose up -d'..."
-      docker compose up -d
+      docker compose up -d || {
+        echo "Docker compose not installed or malfunctioning, attempting docker run"
+        docker run -d --name artifact -p ${EAR_PORT}:443 -v ${CERTIFICATE_PATH}:/usr/share/nginx/certs/ear-http.crt:z -v ${KEY_PATH}:/usr/share/nginx/certs/ear-http.pem:z -v $(pwd)/nginx.conf:/etc/nginx/conf.d/nginx.conf:z ${IMAGE}
+      }
       ;;
     down)
       echo "Running 'docker compose down'..."
-      docker compose down
+      docker compose down || {
+        echo "Docker compose not installed or malfunctioning, attempting docker container stop"
+        docker container stop artifact
+        docker container rm artifact
+      }
       ;;
     logs)
       docker logs deploy_artifact_1
