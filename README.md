@@ -13,18 +13,23 @@ Nginx based container that serves Elastic Artifacts within an airgapped envriome
 
 Set the environment variables in ```variables.env``` using a text editor of your choice.
 ```
-export STACK_VERSION=8.18.4
+export STACK_VERSION=9.0.4
 export NGINX_VERSION=1.29.0
 export REPOSITORY=docker.io
 export CREATOR=rik1254
 export NAME=artefact-repository
+export CREATION_DATE=2025-08-08
+
 
 # Add the absolute or relative path from the deploy.sh script
 export CERTIFICATE_PATH=./certs/wildcard.crt
 export KEY_PATH=./certs/wildcard.pem
 
+# Only change if there is a port conflict on the node EAR will be deployed on to
+export EAR_PORT=8443
+
 # DO NOT CHANGE
-export IMAGE=$REPOSITORY/$CREATOR/$NAME:$STACK_VERSION
+export IMAGE=$REPOSITORY/$CREATOR/$NAME:$STACK_VERSION-$CREATION_DATE
 ```
 Export the variables
 ```
@@ -36,11 +41,12 @@ echo $NGINX_VERSION
 1.29.0
 
 echo $ELASTIC_VERSION
-8.18.4
+9.0.4
 ```
 
 Run the following script. It will fail if the above variables are not set.
-``` 
+```
+cd build 
 ./build.sh
 ```
 This script creates a new Docker image containing the artefacts for updates and upgrades to Elastic Agents and also Endpoint Security Definitions.
@@ -49,12 +55,12 @@ The Version, Image ID and Size will differ:
 ```
 docker images
 
-REPOSITORY                TAG           IMAGE ID      CREATED        SIZE
-docker.io/rik1254/ear  8.18.4        c68166aa2d7d  5 minutes ago  1.57 GB
+REPOSITORY                             TAG               IMAGE ID      CREATED             SIZE
+docker.io/rik1254/artefact-repository  9.0.4-2025-08-08  1ec42dd0481b  About a minute ago  2.63 GB
 ```
 Future references to ```IMAGE``` will require the ```REPOSITORY``` and ```TAG``` elements from above.
 
-Using the above example, the IMAGE will be ```docker.io/rik1254/ear:8.18.4```.
+Using the above example, the IMAGE will be ```docker.io/rik1254/ear:9.0.4-2025-08-08```.
 
 # Save the image
 ## Save the image
@@ -62,11 +68,7 @@ To do this, the image name will need to be known.
 ```
 docker save IMAGE > ear.tar
 ```
-At this stage, the image can be exported from the machine and copied to another machine.The following will also be required additionally to the image:
-- deploy.sh
-- docker-compose.yml
-- nginx.conf
-- variables.env
+At this stage, the image can be exported from the machine and copied to another machine. The 'deploy' directory will also be required.
 
 The image enables HTTPS by default, this repository provides a self signed certificate and key to use, however it is recommended to create a new certificate and key for the environment this will be deployed into.
 # Load the image
@@ -82,12 +84,14 @@ Verify it has loaded with the following (the Version, Image ID and Size will dif
 ```
 docker images
 
-REPOSITORY                TAG           IMAGE ID      CREATED        SIZE
-docker.io/rik1254/ear  8.18.4        c68166aa2d7d  5 minutes ago  1.57 GB
+REPOSITORY                             TAG               IMAGE ID      CREATED             SIZE
+docker.io/rik1254/artefact-repository  9.0.4-2025-08-08  1ec42dd0481b  About a minute ago  2.63 GB
 ```
 
 # Run the image
 ## Requirements
+Unpack the 'deploy' package taken at the same time the image was save. This will contain the following:
+```
 It is expected to have the following directory layout and all of the following commands are to be executed in the same directory as the ```docker-compose.yml``` file.
 ```
 .
@@ -105,6 +109,7 @@ Out of the box, the provided files (```nginx.conf```, ```variables.env``` and ``
 
 
 ```
+cd deploy
 ./deploy.sh
 ```
 Follow the prompts printed on screen.
